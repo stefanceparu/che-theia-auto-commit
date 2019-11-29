@@ -11,25 +11,17 @@ export async function start(context: theia.PluginContext) {
 
             const git: any = gitExtension.exports._model.git;
 
-            const listener = async (out: string) => {
-                console.log("----------------------");
-                console.log(out);
-            }
-
-            git.onOutput.addListener('log', listener);
-
             theia.workspace.onDidSaveTextDocument((elem: any) => {
                 let elems = elem.fileName.split('/');
                 elems.pop();
                 let dir = elems.join('/');
 
                 git.exec(dir, ['add', elem.fileName]).then(() => {
-                    git.exec(dir, ["commit", "-am", "test"]).then(() => {
-                        git.exec(dir, ['push']).then(() => {}).catch(() => {});
-                    }).catch(() => {});
-                }).catch(() => {});
+                    git.exec(dir, ['commit', '-am', 'test']).then(() => {
+                        git.exec(dir, ['push']).then(() => { }).catch(() => { });
+                    }).catch(() => { });
+                }).catch(() => { });
             });
-
         }
     }
 
