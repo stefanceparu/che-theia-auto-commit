@@ -1,0 +1,8 @@
+id: auto-commit-plugin
+version: 0.0.1
+type: Che Auto Commit Plugin
+name: Che Auto Commit Plugin
+title: Che Auto Commit Plugin
+description: A Che auto commit Plug-in
+icon: https://www.eclipse.org/che/images/logo-eclipseche.svg
+url: https://github.com/caciobanu/che-theia-auto-commit/archive/master.zip
