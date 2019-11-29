@@ -13,6 +13,6 @@ firstPublicationDate: '2019-11-29'
 url: https://github.com/caciobanu/che-theia-auto-commit/archive/master.zip
 spec:
   containers:
-  - image: docker.io/eclipse/che-remote-plugin-node:next
+  - image: eclipse/che-theia-endpoint-runtime:next
     name: hackajob-auto-commit
     memoryLimit: '256Mi'
