@@ -2,13 +2,13 @@ apiVersion: v2
 publisher: hackajob
 name: auto-commit
 version: 0.0.1
-type: Eclipse Che Plugin
+type: Che Editor
 displayName: Auto Commit
 title: Auto Commit
 description: Auto Commit
 icon: https://www.eclipse.org/che/images/logo-eclipseche.svg
 # repository: https://github.com/Microsoft/vscode
-category: Language
+category: Editor
 firstPublicationDate: '2019-11-29'
 spec:
   containers:
