@@ -1,6 +1,6 @@
 apiVersion: v2
 publisher: hackajob
-name: auto-commit
+name: auto_commit
 version: 0.0.1
 type: Che Editor
 displayName: Auto Commit
