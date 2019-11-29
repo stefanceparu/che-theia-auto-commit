@@ -10,10 +10,4 @@ icon: https://www.eclipse.org/che/images/logo-eclipseche.svg
 # repository: https://github.com/Microsoft/vscode
 category: Editor
 firstPublicationDate: '2019-11-29'
-spec:
-  containers:
-  - image: "docker.io/eclipse/che-remote-plugin-node:next"
-    name: hackajob-auto-commit
-    memoryLimit: '256Mi'
-  extensions:
-  - https://github.com/caciobanu/che-theia-auto-commit/archive/master.zip
+url: https://github.com/caciobanu/che-theia-auto-commit/archive/master.zip
