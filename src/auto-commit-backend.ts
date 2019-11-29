@@ -29,9 +29,9 @@ export async function start(context: theia.PluginContext) {
                 elems.pop();
                 let dir = elems.join('/');
 
-                git.exec(dir, ['add', elem.fileName]);
-                git.exec(dir, ["commit", "-am", "test"]);
-                git.exec(dir, ['push']);
+                git.exec(dir, ['add', elem.fileName]).then(() => {}).catch(() => {});
+                git.exec(dir, ["commit", "-am", "test"]).then(() => {}).catch(() => {});
+                git.exec(dir, ['push']).then(() => {}).catch(() => {});
             });
 
         }
