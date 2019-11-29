@@ -4,7 +4,6 @@
  */
 
 import * as theia from '@theia/plugin';
-import * as che from '@eclipse-che/plugin';
 
 export async function start(context: theia.PluginContext) {
     let gitLogHandlerInitialized: boolean;
@@ -25,6 +24,8 @@ export async function start(context: theia.PluginContext) {
             git.onOutput.addListener('log', listener);
 
             theia.workspace.onDidSaveTextDocument((elem) => {
+                theia.window.showInformationMessage('Hello World!');
+                
                 let elems = elem.fileName.split('/');
                 elems.pop();
                 let dir = elems.join('/');
