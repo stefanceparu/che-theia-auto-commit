@@ -12,7 +12,5 @@ category: Editor
 firstPublicationDate: '2019-11-29'
 url: https://github.com/caciobanu/che-theia-auto-commit/raw/master/plugin.tar.gz
 spec:
-  containers:
-  - image: eclipse/che-theia-endpoint-runtime:next
-    name: hackajob-auto-commit
-    memoryLimit: '256Mi'
+  extensions:
+  - https://github.com/caciobanu/che-theia-auto-commit/raw/master/auto_commit.theia
