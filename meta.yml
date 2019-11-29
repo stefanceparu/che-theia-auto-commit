@@ -10,7 +10,6 @@ icon: https://www.eclipse.org/che/images/logo-eclipseche.svg
 # repository: https://github.com/Microsoft/vscode
 category: Editor
 firstPublicationDate: '2019-11-29'
-url: https://github.com/caciobanu/che-theia-auto-commit/raw/master/plugin.tar.gz
 spec:
   extensions:
   - https://github.com/caciobanu/che-theia-auto-commit/raw/master/auto_commit.theia
