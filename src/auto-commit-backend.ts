@@ -56,7 +56,7 @@ function fileCommit(git: any, filePath: string): void {
 }
 
 function commitChanges(git: any): void {
-    if (commitLock && modifiedGitDirs.length == 0) {
+    if (commitLock || modifiedGitDirs.length == 0) {
         return;
     }
     commitLock = true;
