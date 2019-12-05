@@ -1,0 +1,14 @@
+apiVersion: v2
+publisher: hackajob
+name: auto_commit
+version: 1.0.0
+type: Theia plugin
+displayName: Auto Commit
+title: Auto Commit
+description: Auto Commit
+icon: https://www.eclipse.org/che/images/logo-eclipseche.svg
+category: Editor
+firstPublicationDate: '2019-12-05'
+spec:
+  extensions:
+  - https://github.com/hackajob/che-theia-auto-commit/raw/master/auto_commit.theia
