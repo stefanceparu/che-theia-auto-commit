@@ -7,13 +7,11 @@ let timeoutInterval: number = 5000; // miliseconds
 let interval: any = null;
 
 export async function start(context: theia.PluginContext) {
-    let gitLogHandlerInitialized: boolean;
+    let pluginInitialized: boolean;
 
     const onChange = () => {
-        // Get the vscode Git plugin if the plugin is started.
-        const gitExtension = theia.plugins.getPlugin('vscode.git');
-        if (!gitLogHandlerInitialized && gitExtension && gitExtension.exports) {
-            gitLogHandlerInitialized = true;
+        if (!pluginInitialized) {
+            pluginInitialized = true;
 
             if (typeof theia.workspace.rootPath === undefined) {
                 return;
@@ -112,12 +110,10 @@ function commitChanges(dirs: string[]): void {
                     cwd: dir
                 }
             );
-        } catch {
-            ;
-        }
-
-        commitLock = false;
+        } catch { }
     });
+
+    commitLock = false;
 }
 
 export function stop() {
