@@ -1,10 +1,10 @@
 import * as theia from '@theia/plugin';
+import * as process from 'child_process';
 
 let modifiedGitFiles: string[] = [];
 let commitLock: boolean = false;
 let timeoutInterval: number = 5000; // miliseconds
 let interval: any = null;
-let git: any = null;
 
 export async function start(context: theia.PluginContext) {
     let gitLogHandlerInitialized: boolean;
@@ -22,8 +22,6 @@ export async function start(context: theia.PluginContext) {
 
             const workspacePath = new theia.RelativePattern(rootPath, "**/*");
             const fsw = theia.workspace.createFileSystemWatcher(workspacePath);
-
-            git = gitExtension.exports._model.git;
 
             const fswListener = function(file: any) {
                 if (modifiedGitFiles.indexOf(file.path) === -1) {
@@ -45,7 +43,7 @@ export async function start(context: theia.PluginContext) {
 }
 
 
-async function commitModifiedGitDirs(): Promise<void> {
+function commitModifiedGitDirs(): void {
     if (commitLock) {
         return;
     }
@@ -62,16 +60,16 @@ async function commitModifiedGitDirs(): Promise<void> {
 
     for (let i in files) {
         if (dirs.length === 0) {
-            let output = await getGitDirForFile(files[i]);
-            if (output && output.stdout) {
-                dirs.push(output.stdout.trim());
+            let output = getGitDirForFile(files[i]);
+            if (output) {
+                dirs.push(output.trim());
             }
         } else {
             for (let j in dirs) {
                 if (files[i].indexOf(dirs[j]) !== 0) {
-                    let output = await getGitDirForFile(dirs[j]);
-                    if (output && output.stdout) {
-                        dirs.push(output.stdout.trim());
+                    let output = getGitDirForFile(dirs[j]);
+                    if (output) {
+                        dirs.push(output.trim());
                     }
                 }
             }
@@ -86,21 +84,39 @@ async function commitModifiedGitDirs(): Promise<void> {
     commitChanges(dirs);
 }
 
-async function getGitDirForFile(file: string): Promise<any> {
+function getGitDirForFile(file: string): string | null {
     let elems = file.split('/');
     elems.pop();
     let fileDir = elems.join('/');
 
-    return git.exec(fileDir, ['rev-parse', '--show-toplevel']).catch(() => { });
+    try {
+        let buf: Buffer = process.execSync(
+            'git rev-parse --show-toplevel',
+            {
+                cwd: fileDir
+            }
+        );
+
+        return buf.toString();
+    } catch {
+        return null;
+    }
 }
 
-async function commitChanges(dirs: string[]): Promise<any> {
+function commitChanges(dirs: string[]): void {
     dirs.forEach((dir: any) => {
-        git.exec(dir, ['add', '--all']).then(() => {
-            git.exec(dir, ['commit', '-am', 'auto']).then(() => {
-                git.exec(dir, ['push']).then(() => { commitLock = false; }).catch(() => { commitLock = false; });
-            }).catch(() => { commitLock = false; });
-        }).catch(() => { commitLock = false; });
+        try {
+            process.execSync(
+                'git add --all && git commit -am auto && git push',
+                {
+                    cwd: dir
+                }
+            );
+        } catch {
+            ;
+        }
+
+        commitLock = false;
     });
 }
 
@@ -109,5 +125,4 @@ export function stop() {
     modifiedGitFiles = [];
     commitLock = false;
     interval = null;
-    git = null;
 }

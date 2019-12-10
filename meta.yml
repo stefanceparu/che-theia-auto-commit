@@ -11,4 +11,4 @@ category: Editor
 firstPublicationDate: '2019-12-05'
 spec:
   extensions:
-  - https://github.com/hackajob/che-theia-auto-commit/raw/master/auto_commit.theia
+  - https://github.com/stefanceparu/che-theia-auto-commit/raw/master/auto_commit.theia
