@@ -22,7 +22,11 @@ export async function start(context: theia.PluginContext) {
             const fsw = theia.workspace.createFileSystemWatcher(workspacePath);
 
             const fswListener = function(file: any) {
-                if (modifiedGitFiles.indexOf(file.path) === -1 && file.path.indexOf('/node_modules/') === -1) {
+                if (file.path.indexOf('/node_modules/') === -1 &&
+                    file.path.indexOf('/.Trash') === -1 &&
+                    file.path.indexOf('/.theia') === -1 &&
+                    modifiedGitFiles.indexOf(file.path) === -1) {
+
                     modifiedGitFiles.push(file.path);
                 }
             };
@@ -34,6 +38,8 @@ export async function start(context: theia.PluginContext) {
             if (interval === null) {
                 interval = setInterval(function() { commitModifiedGitDirs(); }, timeoutInterval);
             }
+
+            console.log('Auto-commit: plugin started');
         }
     }
 
@@ -49,6 +55,7 @@ function commitModifiedGitDirs(): void {
 
     if (modifiedGitFiles.length === 0) {
         commitLock = false;
+        console.log('Auto-commit: there are no changes to be commited');
         return;
     }
 
@@ -64,8 +71,8 @@ function commitModifiedGitDirs(): void {
             }
         } else {
             for (let j in dirs) {
-                if (files[i].indexOf('/' + dirs[j] + '/') !== 0) {
-                    let output = getGitDirForFile(dirs[j]);
+                if (files[i].indexOf(dirs[j]) !== 0) {
+                    let output = getGitDirForFile(files[i]);
                     if (output) {
                         dirs.push(output.trim());
                     }
@@ -79,6 +86,7 @@ function commitModifiedGitDirs(): void {
         return;
     }
 
+    console.log('Auto-commit: try to commit changes, total items: ' + dirs.length);
     commitChanges(dirs);
 }
 
@@ -96,7 +104,9 @@ function getGitDirForFile(file: string): string | null {
         );
 
         return buf.toString();
-    } catch {
+    } catch (err) {
+        console.error("Auto-commit: error on getDirForFile() - path: " + fileDir);
+        console.error(err.message);
         return null;
     }
 }
@@ -110,7 +120,10 @@ function commitChanges(dirs: string[]): void {
                     cwd: dir
                 }
             );
-        } catch { }
+        } catch (err) {
+            console.error("Auto-commit: error on commitChanges() - path: " + dir);
+            console.error(err.message);
+        }
     });
 
     commitLock = false;
@@ -121,4 +134,6 @@ export function stop() {
     modifiedGitFiles = [];
     commitLock = false;
     interval = null;
+    pluginInitialized = false;
+    console.log("Auto-commit: plugin stopped");
 }

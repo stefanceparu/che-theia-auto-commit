@@ -1,7 +1,7 @@
 apiVersion: v2
 publisher: hackajob
-name: auto-commit
-version: 1.0.0
+name: auto_commit
+version: 1.0.1
 type: Theia plugin
 displayName: Auto Commit
 title: Auto Commit
