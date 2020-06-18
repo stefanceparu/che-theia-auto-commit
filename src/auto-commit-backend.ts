@@ -22,7 +22,7 @@ export async function start(context: theia.PluginContext) {
             const fsw = theia.workspace.createFileSystemWatcher(workspacePath);
 
             const fswListener = function(file: any) {
-                if (modifiedGitFiles.indexOf(file.path) === -1) {
+                if (modifiedGitFiles.indexOf(file.path) === -1 && file.path.indexOf('/node_modules/') === -1) {
                     modifiedGitFiles.push(file.path);
                 }
             };
@@ -64,7 +64,7 @@ function commitModifiedGitDirs(): void {
             }
         } else {
             for (let j in dirs) {
-                if (files[i].indexOf(dirs[j]) !== 0) {
+                if (files[i].indexOf('/' + dirs[j] + '/') !== 0) {
                     let output = getGitDirForFile(dirs[j]);
                     if (output) {
                         dirs.push(output.trim());
